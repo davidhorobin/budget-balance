@@ -1,5 +1,7 @@
-package com.davidhorobin.budgetbalance;
+package com.davidhorobin.budgetbalance.service;
 
+import com.davidhorobin.budgetbalance.entity.Transaction;
+import com.davidhorobin.budgetbalance.repository.TransactionRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

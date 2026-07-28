@@ -1,4 +1,4 @@
-package com.davidhorobin.budgetbalance;
+package com.davidhorobin.budgetbalance.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

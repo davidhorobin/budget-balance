@@ -1,5 +1,6 @@
-package com.davidhorobin.budgetbalance;
+package com.davidhorobin.budgetbalance.repository;
 
+import com.davidhorobin.budgetbalance.entity.Transaction;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TransactionRepo extends JpaRepository<Transaction, Integer> {
