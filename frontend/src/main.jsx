@@ -1,6 +1,6 @@
 import { createRoot } from 'react-dom/client'
-import TransactionTable from '/src/components/TransactionTable.jsx';
+import ApiGet from '/src/components/ApiGet'
 
 createRoot(document.getElementById('root')).render(
-    <TransactionTable />
+    <ApiGet />
 )
