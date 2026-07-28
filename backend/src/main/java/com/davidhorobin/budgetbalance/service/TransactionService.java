@@ -1,10 +1,15 @@
 package com.davidhorobin.budgetbalance.service;
 
+import com.davidhorobin.budgetbalance.dto.transaction.TransactionRequest;
+import com.davidhorobin.budgetbalance.dto.transaction.TransactionResponse;
 import com.davidhorobin.budgetbalance.entity.Transaction;
+import com.davidhorobin.budgetbalance.mapper.TransactionMapper;
 import com.davidhorobin.budgetbalance.repository.TransactionRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,24 +21,26 @@ import java.util.Optional;
 public class TransactionService {
     private final TransactionRepo transactionRepo;
 
-    public List<Transaction> getAllTransactions() {
-        return transactionRepo.findAll();
+    public List<TransactionResponse> getAllTransactions() {
+        return transactionRepo.findAll().stream()
+                .map(TransactionMapper::toResponse)
+                .toList();
     }
 
-    public Transaction getTransactionById(Integer id) {
-        Optional<Transaction> transaction = transactionRepo.findById(id);
-        if (transaction.isPresent()) {
-            return transaction.get();
-        }
-        log.info("Transaction with id {} not found", id);
-        return null;
+    public TransactionResponse getTransactionById(Integer id) {
+        Transaction transaction = transactionRepo.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Transaction with id " + id + " not found."
+                ));
+        return TransactionMapper.toResponse(transaction);
     }
 
-    public Transaction saveTransaction(Transaction transaction) {
-        transaction.setTime(LocalDateTime.now());
-        Transaction savedTransaction = transactionRepo.save(transaction);
-        log.info("Transaction with id {} saved", savedTransaction.getId());
-        return savedTransaction;
+    public TransactionResponse saveTransaction(TransactionRequest request) {
+        Transaction t = TransactionMapper.toEntity(request);
+        if (t.getTime() == null) t.setTime(LocalDateTime.now());
+        Transaction saved = transactionRepo.save(t);
+        log.info("Transaction with id {} saved", saved.getId());
+        return TransactionMapper.toResponse(saved);
     }
 
     public void deleteTransactionById(Integer id) {

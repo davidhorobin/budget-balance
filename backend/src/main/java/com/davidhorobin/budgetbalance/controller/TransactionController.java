@@ -1,5 +1,7 @@
 package com.davidhorobin.budgetbalance.controller;
 
+import com.davidhorobin.budgetbalance.dto.transaction.TransactionRequest;
+import com.davidhorobin.budgetbalance.dto.transaction.TransactionResponse;
 import com.davidhorobin.budgetbalance.service.TransactionService;
 import com.davidhorobin.budgetbalance.entity.Transaction;
 import jakarta.validation.Valid;
@@ -19,24 +21,24 @@ public class TransactionController {
     private final TransactionService transactionService;
 
     @GetMapping("/")
-    public ResponseEntity<List<Transaction>> getAllTransactions() {
-        return ResponseEntity.ok().body(transactionService.getAllTransactions());
+    public ResponseEntity<List<TransactionResponse>> getAllTransactions() {
+        return ResponseEntity.ok(transactionService.getAllTransactions());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Transaction> getTransactionById(@PathVariable Integer id) {
-        return ResponseEntity.ok().body(transactionService.getTransactionById(id));
+    public ResponseEntity<TransactionResponse> getTransactionById(@PathVariable Integer id) {
+        return ResponseEntity.ok(transactionService.getTransactionById(id));
     }
 
     @PostMapping("/")
-    public ResponseEntity<Transaction> saveTransaction(@Valid @RequestBody Transaction transaction) {
-        return ResponseEntity.ok().body(transactionService.saveTransaction(transaction));
+    public ResponseEntity<TransactionResponse> saveTransaction(@Valid @RequestBody TransactionRequest request) {
+        return ResponseEntity.ok(transactionService.saveTransaction(request));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteTransactionById(@PathVariable Integer id) {
         transactionService.deleteTransactionById(id);
-        return ResponseEntity.ok().body("Deleted transaction successfully");
+        return ResponseEntity.ok("Deleted transaction successfully");
     }
 
 }
