@@ -1,22 +1,18 @@
 package com.davidhorobin.budgetbalance;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 public class BudgetBalanceController {
 
     private Map<String, Transaction> transactions = new HashMap<>() {{
-        put("tesco", new Transaction(100, "tesco"));
+        UUID id = UUID.randomUUID();
+        put(id.toString(), new Transaction(id.toString(), 100, "tesco"));
     }};
 
     @GetMapping("/hello")
@@ -29,16 +25,23 @@ public class BudgetBalanceController {
         return transactions.values();
     }
 
-    @GetMapping("/transactions/{vendor}")
-    public Transaction get(@PathVariable String vendor) {
-        Transaction t = transactions.get(vendor);
+    @GetMapping("/transactions/{id}")
+    public Transaction get(@PathVariable int id) {
+        Transaction t = transactions.get(id);
         if (t == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         return t;
     }
 
-    @DeleteMapping("/transactions/{vendor}")
-    public void delete(@PathVariable String vendor) {
-        Transaction t = transactions.remove(vendor);
+    @DeleteMapping("/transactions/{id}")
+    public void delete(@PathVariable int id) {
+        Transaction t = transactions.remove(id);
         if (t == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+
+    @PostMapping("/transactions")
+    public Transaction post(@RequestBody @Valid Transaction t) {
+        t.setId(UUID.randomUUID().toString());
+        transactions.put(t.getId(), t);
+        return t;
     }
 }
