@@ -1,47 +1,24 @@
 package com.davidhorobin.budgetbalance;
 
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Null;
-import jakarta.validation.constraints.Positive;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.util.UUID;
+import java.time.LocalDateTime;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+@Entity
+@Table(name = "transaction")
 public class Transaction {
 
-    @Null
-    private String id;
-    @Positive
-    private float value;
-    @NotEmpty
+    @Id
+    private Integer id;
+    private Float value;
     private String vendor;
-
-    public Transaction(String id, float value, String vendor) {
-        this.id = id;
-        this.value = value;
-        this.vendor = vendor;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getVendor() {
-        return vendor;
-    }
-
-    public void setVendor(String vendor) {
-        this.vendor = vendor;
-    }
-
-    public float getValue() {
-        return value;
-    }
-
-    public void setValue(float value) {
-        this.value = value;
-    }
+    private LocalDateTime time;
 }
