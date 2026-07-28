@@ -1,4 +1,3 @@
-DROP TABLE IF EXISTS transactions.transactions;
 CREATE TABLE if NOT EXISTS transactions.transactions (
     id SERIAL PRIMARY KEY,
     amount NUMERIC(12, 2) NOT NULL,
