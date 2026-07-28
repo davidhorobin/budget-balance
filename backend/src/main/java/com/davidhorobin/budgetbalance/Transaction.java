@@ -11,13 +11,15 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Data
 @Entity
-@Table(name = "transaction")
+@Table(name = "transactions")
 public class Transaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Column(nullable = false)
     private Float value;
+    @Column(nullable = false, length = 255)
     private String vendor;
     private LocalDateTime time;
 }

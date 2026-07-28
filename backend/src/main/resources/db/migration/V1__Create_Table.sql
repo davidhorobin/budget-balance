@@ -1,5 +1,4 @@
-CREATE SCHEMA if NOT EXISTS transactions;
-CREATE TABLE if NOT EXISTS transaction (
+CREATE TABLE if NOT EXISTS transactions.transactions (
     id SERIAL PRIMARY KEY,
     value REAL,
     vendor VARCHAR(255),
