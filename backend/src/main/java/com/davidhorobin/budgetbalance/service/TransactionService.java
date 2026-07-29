@@ -25,7 +25,7 @@ public class TransactionService {
     private final CounterpartyRepo counterpartyRepo;
 
     public List<TransactionResponse> getAllTransactions() {
-        return transactionRepo.findAll().stream()
+        return transactionRepo.findAllByOrderByTimeAsc().stream()
                 .map(TransactionMapper::toResponse)
                 .toList();
     }
