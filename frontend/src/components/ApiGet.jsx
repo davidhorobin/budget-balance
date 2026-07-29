@@ -27,7 +27,7 @@ function ApiGet() {
             <tbody>
             {transactions.map((t) => (
                 <tr key = {t.id}>
-                    <td>{t.vendor}</td>
+                    <td>{t.counterparty}</td>
                     <td>{t.value}</td>
                     <td>{t.time}</td>
                 </tr>
