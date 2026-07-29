@@ -27,7 +27,7 @@ public class TransactionService {
                 .toList();
     }
 
-    public TransactionResponse getTransactionById(Integer id) {
+    public TransactionResponse getTransactionById(int id) {
         Transaction transaction = transactionRepo.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "Transaction with id " + id + " not found."

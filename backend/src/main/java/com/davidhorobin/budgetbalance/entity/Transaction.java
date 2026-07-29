@@ -18,9 +18,13 @@ public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     @Column(nullable = false)
     private BigDecimal amount;
+
     @Column(nullable = false, length = 255)
     private String counterparty;
+
     private LocalDateTime time;
+
 }
