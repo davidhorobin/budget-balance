@@ -22,8 +22,9 @@ public class Transaction {
     @Column(nullable = false)
     private BigDecimal amount;
 
-    @Column(nullable = false, length = 100)
-    private String counterparty;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "counterparty_id", nullable = false)
+    private Counterparty counterparty;
 
     private LocalDateTime time;
 

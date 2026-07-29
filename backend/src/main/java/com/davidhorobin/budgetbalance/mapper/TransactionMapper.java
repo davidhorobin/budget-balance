@@ -9,7 +9,6 @@ public class TransactionMapper {
     public static Transaction toEntity(TransactionRequest req) {
         Transaction t = new Transaction();
         t.setAmount(req.amount());
-        t.setCounterparty(req.counterparty());
         if (req.time() != null) {
             t.setTime(req.time());
         }
@@ -17,10 +16,13 @@ public class TransactionMapper {
     }
 
     public static TransactionResponse toResponse(Transaction t) {
+        String name = null;
+        if (t.getCounterparty() != null) name = t.getCounterparty().getName();
+
         return new TransactionResponse(
                 t.getId(),
                 t.getAmount(),
-                t.getCounterparty(),
+                name,
                 t.getTime()
         );
     }

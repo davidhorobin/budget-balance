@@ -2,8 +2,10 @@ package com.davidhorobin.budgetbalance.service;
 
 import com.davidhorobin.budgetbalance.dto.transaction.TransactionRequest;
 import com.davidhorobin.budgetbalance.dto.transaction.TransactionResponse;
+import com.davidhorobin.budgetbalance.entity.Counterparty;
 import com.davidhorobin.budgetbalance.entity.Transaction;
 import com.davidhorobin.budgetbalance.mapper.TransactionMapper;
+import com.davidhorobin.budgetbalance.repository.CounterpartyRepo;
 import com.davidhorobin.budgetbalance.repository.TransactionRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +22,7 @@ import java.util.Optional;
 @Slf4j
 public class TransactionService {
     private final TransactionRepo transactionRepo;
+    private final CounterpartyRepo counterpartyRepo;
 
     public List<TransactionResponse> getAllTransactions() {
         return transactionRepo.findAll().stream()
@@ -38,6 +41,10 @@ public class TransactionService {
     public TransactionResponse saveTransaction(TransactionRequest request) {
         Transaction t = TransactionMapper.toEntity(request);
         if (t.getTime() == null) t.setTime(LocalDateTime.now());
+
+        Counterparty counterparty = resolveCounterparty(request.counterparty());
+        t.setCounterparty(counterparty);
+
         Transaction saved = transactionRepo.save(t);
         log.info("Transaction with id {} saved", saved.getId());
         return TransactionMapper.toResponse(saved);
@@ -46,4 +53,16 @@ public class TransactionService {
     public void deleteTransactionById(Integer id) {
         transactionRepo.deleteById(id);
     }
+
+    private Counterparty resolveCounterparty(String name) {
+        String normalisedName = name.trim().toLowerCase();
+        return counterpartyRepo.findByName(normalisedName)
+                .orElseGet(() -> {
+                    Counterparty counterparty = new Counterparty();
+                    counterparty.setName(normalisedName);
+                    Counterparty saved = counterpartyRepo.save(counterparty);
+                    return saved;
+                });
+    }
+
 }

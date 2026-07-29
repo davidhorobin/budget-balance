@@ -8,8 +8,9 @@ import jakarta.validation.constraints.Positive;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public record TransactionRequest (
-    @NotNull @Positive BigDecimal amount,
-    @NotBlank String counterparty,
-    @Nullable LocalDateTime time
-) {}
+public record TransactionRequest(
+        @NotNull @Positive BigDecimal amount,
+        @NotBlank String counterparty,
+        @Nullable LocalDateTime time
+) {
+}
