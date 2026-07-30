@@ -1,6 +1,7 @@
 package com.davidhorobin.budgetbalance.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,6 +26,7 @@ public class User implements UserDetails {
 
     private String password;
 
+    @Email
     private String email;
     
     @Override

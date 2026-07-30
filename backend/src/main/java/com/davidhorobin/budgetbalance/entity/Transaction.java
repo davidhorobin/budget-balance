@@ -1,6 +1,7 @@
 package com.davidhorobin.budgetbalance.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,12 +21,14 @@ public class Transaction {
     private Integer id;
 
     @Column(nullable = false)
+    @NotNull
     private BigDecimal amount;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "counterparty_id", nullable = false)
     private Counterparty counterparty;
 
+    @PastOrPresent
     private LocalDateTime time;
 
 }
