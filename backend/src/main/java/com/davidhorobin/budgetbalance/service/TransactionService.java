@@ -60,8 +60,7 @@ public class TransactionService {
                 .orElseGet(() -> {
                     Counterparty counterparty = new Counterparty();
                     counterparty.setName(normalisedName);
-                    Counterparty saved = counterpartyRepo.save(counterparty);
-                    return saved;
+                    return counterpartyRepo.save(counterparty);
                 });
     }
 

@@ -1,6 +1,5 @@
 package com.davidhorobin.budgetbalance.service;
 
-import com.davidhorobin.budgetbalance.entity.User;
 import com.davidhorobin.budgetbalance.repository.UserRepo;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
