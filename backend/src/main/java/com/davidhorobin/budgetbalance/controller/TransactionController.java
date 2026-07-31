@@ -3,7 +3,6 @@ package com.davidhorobin.budgetbalance.controller;
 import com.davidhorobin.budgetbalance.dto.transaction.TransactionRequest;
 import com.davidhorobin.budgetbalance.dto.transaction.TransactionResponse;
 import com.davidhorobin.budgetbalance.service.TransactionService;
-import com.davidhorobin.budgetbalance.entity.Transaction;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
