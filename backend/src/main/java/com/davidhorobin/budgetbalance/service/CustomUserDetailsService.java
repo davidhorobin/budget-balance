@@ -1,11 +1,14 @@
 package com.davidhorobin.budgetbalance.service;
 
 import com.davidhorobin.budgetbalance.repository.UserRepo;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.NullMarked;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+@NullMarked
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
