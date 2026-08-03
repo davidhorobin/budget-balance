@@ -25,7 +25,7 @@ public class TransactionController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TransactionResponse> getTransactionById(@PathVariable Integer id) {
+    public ResponseEntity<TransactionResponse> getTransactionById(@PathVariable long id) {
         return ResponseEntity.ok(transactionService.getTransactionById(id));
     }
 
@@ -35,7 +35,7 @@ public class TransactionController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteTransactionById(@PathVariable Integer id) {
+    public ResponseEntity<String> deleteTransactionById(@PathVariable long id) {
         transactionService.deleteTransactionById(id);
         return ResponseEntity.ok("Deleted transaction successfully");
     }

@@ -29,7 +29,7 @@ public class TransactionService {
                 .toList();
     }
 
-    public TransactionResponse getTransactionById(int id) {
+    public TransactionResponse getTransactionById(long id) {
         Transaction transaction = transactionRepo.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "Transaction with id " + id + " not found."
@@ -49,7 +49,7 @@ public class TransactionService {
         return TransactionMapper.toResponse(saved);
     }
 
-    public void deleteTransactionById(Integer id) {
+    public void deleteTransactionById(long id) {
         transactionRepo.deleteById(id);
     }
 
