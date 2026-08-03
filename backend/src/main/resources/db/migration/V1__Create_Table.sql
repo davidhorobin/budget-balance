@@ -1,18 +1,18 @@
-CREATE TABLE IF NOT EXISTS transactions.counterparty
+CREATE TABLE IF NOT EXISTS counterparty
 (
-    id   SERIAL PRIMARY KEY,
+    id   BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     name VARCHAR(100) UNIQUE NOT NULL
 );
 CREATE TABLE IF NOT EXISTS users
 (
-    id       SERIAL PRIMARY KEY,
+    id       BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     username VARCHAR(100) UNIQUE NOT NULL,
     password VARCHAR(255)        NOT NULL,
-    email    VARCHAR(100)        NOT NULL
+    email    VARCHAR(100) UNIQUE NOT NULL
 );
-CREATE TABLE IF NOT EXISTS transactions.transactions
+CREATE TABLE IF NOT EXISTS transactions
 (
-    id              BIGSERIAL PRIMARY KEY,
+    id              BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     amount          NUMERIC(12, 2) NOT NULL,
     counterparty_id INT            NOT NULL REFERENCES counterparty (id),
     time            TIMESTAMPTZ    NOT NULL DEFAULT now()
