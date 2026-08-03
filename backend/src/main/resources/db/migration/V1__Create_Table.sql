@@ -10,6 +10,14 @@ CREATE TABLE IF NOT EXISTS users
     password VARCHAR(255)        NOT NULL,
     email    VARCHAR(100) UNIQUE NOT NULL
 );
+CREATE TABLE IF NOT EXISTS refresh_tokens
+(
+    id          BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    hash        VARCHAR(255) UNIQUE NOT NULL,
+    user_id     BIGINT              NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+    expiry_date TIMESTAMP           NOT NULL,
+    revoked     BOOLEAN DEFAULT FALSE
+);
 CREATE TABLE IF NOT EXISTS transactions
 (
     id              BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
