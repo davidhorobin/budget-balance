@@ -1,5 +1,6 @@
 package com.davidhorobin.budgetbalance.controller;
 
+import com.davidhorobin.budgetbalance.dto.auth.LoginRequest;
 import com.davidhorobin.budgetbalance.dto.auth.RegisterRequest;
 import com.davidhorobin.budgetbalance.service.AuthService;
 import jakarta.validation.Valid;
@@ -22,6 +23,11 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest request) {
         return ResponseEntity.ok(authService.register(request));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+        return ResponseEntity.ok(authService.verify(request));
     }
 
 }

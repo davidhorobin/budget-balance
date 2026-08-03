@@ -1,7 +1,6 @@
-package com.davidhorobin.budgetbalance.service;
+package com.davidhorobin.budgetbalance.security.userdetails;
 
 import com.davidhorobin.budgetbalance.repository.UserRepo;
-import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.NullMarked;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
