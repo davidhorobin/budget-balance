@@ -1,6 +1,6 @@
 package com.davidhorobin.budgetbalance.security.filter;
 
-import com.davidhorobin.budgetbalance.security.jwt.JWTService;
+import com.davidhorobin.budgetbalance.security.jwt.JwtService;
 import com.davidhorobin.budgetbalance.security.userdetails.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -22,7 +22,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
 
-    private final JWTService jwtService;
+    private final JwtService jwtService;
     private final ApplicationContext context;
 
     @Override
