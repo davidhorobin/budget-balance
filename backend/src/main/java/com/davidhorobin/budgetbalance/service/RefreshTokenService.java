@@ -8,6 +8,7 @@ import com.davidhorobin.budgetbalance.repository.RefreshTokenRepo;
 import com.davidhorobin.budgetbalance.security.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,12 +24,11 @@ public class RefreshTokenService {
     private static final long EXPIRATION_TIME = 60 * 60 * 24 * 14;
 
     private final RefreshTokenRepo refreshTokenRepo;
-    private final StandardPasswordEncoder encoder = new StandardPasswordEncoder();
     private final JwtService jwtService;
 
     public String create(User user) {
         String token = UUID.randomUUID().toString();
-        String hashedToken = encoder.encode(token);
+        String hashedToken = DigestUtils.sha256Hex(token);
 
         RefreshToken refreshToken = new RefreshToken();
         refreshToken.setToken(hashedToken);
@@ -41,16 +41,22 @@ public class RefreshTokenService {
     }
 
     public RefreshResponse verify(RefreshRequest request) {
-        Optional<RefreshToken> saved = refreshTokenRepo.findByToken(encoder.encode(request.token()));
-        if (saved.isEmpty())
+        Optional<RefreshToken> saved = refreshTokenRepo.findByToken(DigestUtils.sha256Hex(request.token()));
+        if (saved.isEmpty()) {
+            log.error(DigestUtils.sha256Hex(request.token()));
+            log.error(DigestUtils.sha256Hex(request.token()));
+            log.error("Refresh token not found");
             return new RefreshResponse(false);
+        }
         RefreshToken token = saved.get();
         User user = token.getUser();
         if (token.isRevoked()) {
+            log.error("Token has been revoked");
             refreshTokenRepo.revokeAllByUserId(user.getId());
             return new RefreshResponse(false);
         }
         if (token.getExpiryDate().isBefore(Instant.now())) {
+            log.error("Token has expired");
             return new RefreshResponse(false);
         }
 
