@@ -1,8 +1,10 @@
 package com.davidhorobin.budgetbalance.controller;
 
 import com.davidhorobin.budgetbalance.dto.auth.LoginRequest;
+import com.davidhorobin.budgetbalance.dto.auth.RefreshRequest;
 import com.davidhorobin.budgetbalance.dto.auth.RegisterRequest;
 import com.davidhorobin.budgetbalance.service.AuthService;
+import com.davidhorobin.budgetbalance.service.RefreshTokenService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService authService;
+    private final RefreshTokenService refreshTokenService;
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest request) {
@@ -28,6 +31,11 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         return ResponseEntity.ok(authService.verify(request));
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<?> refreshToken(@RequestBody RefreshRequest request) {
+        return ResponseEntity.ok(refreshTokenService.verify(request));
     }
 
 }

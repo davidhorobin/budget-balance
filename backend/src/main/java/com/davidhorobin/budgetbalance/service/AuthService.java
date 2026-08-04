@@ -1,9 +1,7 @@
 package com.davidhorobin.budgetbalance.service;
 
-import com.davidhorobin.budgetbalance.dto.auth.LoginResponse;
-import com.davidhorobin.budgetbalance.dto.auth.RegisterResponse;
-import com.davidhorobin.budgetbalance.dto.auth.LoginRequest;
-import com.davidhorobin.budgetbalance.dto.auth.RegisterRequest;
+import com.davidhorobin.budgetbalance.dto.auth.*;
+import com.davidhorobin.budgetbalance.entity.RefreshToken;
 import com.davidhorobin.budgetbalance.security.jwt.JwtService;
 import com.davidhorobin.budgetbalance.entity.User;
 import com.davidhorobin.budgetbalance.mapper.AuthMapper;
@@ -28,6 +26,7 @@ public class AuthService {
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
     private final AuthenticationManager authManager;
     private final JwtService jwtService;
+    private final RefreshTokenService refreshTokenService;
 
     public RegisterResponse register(RegisterRequest registerRequest) {
         User user = AuthMapper.toEntity(registerRequest);
@@ -41,18 +40,25 @@ public class AuthService {
 
 
     public LoginResponse verify(LoginRequest loginRequest) {
-        User user = AuthMapper.toEntity(loginRequest);
-        Optional<User> stored = userRepo.findByUsername(user.getUsername());
-        if (stored.isEmpty())
-            return new LoginResponse(null);
-        user.setEmail(stored.get().getEmail());
+        Optional<User> stored = userRepo.findByUsername(loginRequest.username());
+        if (stored.isEmpty()) {
+            log.error("Username not found {}", loginRequest.username());
+            return new LoginResponse(null, null);
+        }
+        User user = stored.get();
         try {
             Authentication auth = authManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword())
+                    new UsernamePasswordAuthenticationToken(loginRequest.username(), loginRequest.password())
             );
-            return new LoginResponse(jwtService.generateToken(user.getUsername()));
+
+            String accessToken = jwtService.generateAccessToken(user);
+            String refreshToken = refreshTokenService.create(user);
+
+            return new LoginResponse(accessToken, refreshToken);
         } catch (AuthenticationException e) {
-            return new LoginResponse(null);
+            log.error(e.getMessage());
+            return new LoginResponse(null, null);
         }
     }
+
 }
