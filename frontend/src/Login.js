@@ -1,6 +1,12 @@
-import {useRef, useState, useEffect} from 'react'
+import {useRef, useState, useEffect, useContext} from 'react'
+import AuthContext from './context/AuthProvider'
+import axios from './api/axios'
+
+const LOGIN_URL = '/auth/login'
 
 const Login = () => {
+    const {setAuth} = useContext(AuthContext);
+
     const userRef = useRef();
     const errRef = useRef();
 
@@ -19,10 +25,35 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(user, pwd);
-        setUser('');
-        setPwd('');
-        setSuccess(true);
+        try {
+            const res = await axios.post(
+                LOGIN_URL,
+                JSON.stringify({username: user, password: pwd}),
+                {
+                    headers: {'Content-Type': 'application/json'},
+                    withCredentials: true
+                }
+            );
+            const accessToken = res?.data?.access_token;
+            const refreshToken = res?.data?.refresh_token;
+            console.log(accessToken);
+            console.log(refreshToken);
+            setAuth({user, pwd, accessToken, refreshToken});
+            setUser('');
+            setPwd('');
+            setSuccess(true);
+        } catch (err) {
+            console.log(err);
+            if (!err?.response) {
+                setErrMsg("No server response");
+            } else if (err.response?.status === 400) {
+                setErrMsg('Missing username or password');
+            } else if (err.response?.status === 401) {
+                setErrMsg('Invalid username or password');
+            } else {
+                setErrMsg('Login failed.');
+            }
+        }
     }
 
     return (
