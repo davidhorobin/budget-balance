@@ -3,6 +3,7 @@ import {Routes, Route} from "react-router-dom";
 import Layout from "./Layout";
 import Transactions from "./Transactions";
 import RequireAuth from "./RequireAuth";
+import Home from "./Home";
 
 function App() {
     return (
@@ -10,6 +11,7 @@ function App() {
             <Route path="/" element={<Layout/>}>
                 {/* Public routes */}
                 <Route path="login" element={<Login/>}/>
+                <Route path="home" element={<Home/>}/>
 
                 {/* Protected routes */}
                 <Route element={<RequireAuth/>}>
