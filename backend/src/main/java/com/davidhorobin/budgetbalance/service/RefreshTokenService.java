@@ -1,6 +1,5 @@
 package com.davidhorobin.budgetbalance.service;
 
-import com.davidhorobin.budgetbalance.dto.auth.RefreshRequest;
 import com.davidhorobin.budgetbalance.dto.auth.RefreshResponse;
 import com.davidhorobin.budgetbalance.entity.RefreshToken;
 import com.davidhorobin.budgetbalance.entity.User;
@@ -9,7 +8,6 @@ import com.davidhorobin.budgetbalance.security.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -40,11 +38,9 @@ public class RefreshTokenService {
         return token;
     }
 
-    public RefreshResponse verify(RefreshRequest request) {
-        Optional<RefreshToken> saved = refreshTokenRepo.findByToken(DigestUtils.sha256Hex(request.token()));
+    public RefreshResponse verify(String refreshToken) {
+        Optional<RefreshToken> saved = refreshTokenRepo.findByToken(DigestUtils.sha256Hex(refreshToken));
         if (saved.isEmpty()) {
-            log.error(DigestUtils.sha256Hex(request.token()));
-            log.error(DigestUtils.sha256Hex(request.token()));
             log.error("Refresh token not found");
             return new RefreshResponse(false);
         }
