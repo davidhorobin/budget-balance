@@ -1,21 +1,20 @@
-import axios from "./api/axios"
 import {useState, useEffect} from "react";
 import useAuth from "./hooks/useAuth";
 import TransactionTable from "./TransactionTable";
-import useRefreshToken from "./hooks/useRefreshToken";
+import useAxiosPrivate from "./hooks/useAxiosPrivate";
 
 const TRANSACTION_URL = "/transaction/"
 
 const Transactions = () => {
 
+    const axiosPrivate = useAxiosPrivate();
     const {auth} = useAuth();
     const [transactions, setTransactions] = useState([])
-    const refresh = useRefreshToken();
     const config = {
         headers: {Authorization: `Bearer ${auth.accessToken}`}
     };
     useEffect(() => {
-        axios.get(TRANSACTION_URL, config)
+        axiosPrivate.get(TRANSACTION_URL, config)
             .then((res) => {
                 setTransactions(res.data);
             })
@@ -27,7 +26,6 @@ const Transactions = () => {
     return (
         <section>
             <TransactionTable transactions={transactions}/>
-            <button onClick={() => refresh()}></button>
         </section>
     );
 }
