@@ -1,16 +1,21 @@
 import {useState, useEffect} from 'react'
 import useAuth from "./hooks/useAuth";
 import axios from './api/axios'
+import {Link, useNavigate, useLocation} from "react-router-dom";
 
 const LOGIN_URL = '/auth/login'
 
 const Login = () => {
     const {setAuth} = useAuth();
+    const {auth} = useAuth();
+
+    const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || "/";
 
     const [user, setUser] = useState('');
     const [pwd, setPwd] = useState('');
     const [errMsg, setErrMsg] = useState('');
-    const [success, setSuccess] = useState(false);
 
     useEffect(() => {
         setErrMsg('');
@@ -27,14 +32,11 @@ const Login = () => {
                     withCredentials: true
                 }
             );
-            const accessToken = res?.data?.access_token;
-            const refreshToken = res?.data?.refresh_token;
-            console.log(accessToken);
-            console.log(refreshToken);
-            setAuth({user, pwd, accessToken, refreshToken});
+            const accessToken = res?.data?.accessToken;
+            setAuth({user, pwd, accessToken});
             setUser('');
             setPwd('');
-            setSuccess(true);
+            navigate(from, {replace: true})
         } catch (err) {
             console.log(err);
             if (!err?.response) {
@@ -50,48 +52,36 @@ const Login = () => {
     }
 
     return (
-        <>
-            {success ? (
-                <section>
-                    <h1>You are logged in!</h1>
-                    <br/>
-                    <p>
-                        <a href="#">Go to Home</a>
-                    </p>
-                </section>
-            ) : (
-                <section>
-                    <p className={"errmsg"} aria-live={"assertive"}>{errMsg}</p>
-                    <h1>Sign in</h1>
-                    <form onSubmit={handleSubmit}>
-                        <label htmlFor="username">Username</label>
-                        <input
-                            type="text"
-                            id="username"
-                            autoComplete="off"
-                            onChange={e => setUser(e.target.value)}
-                            value={user}
-                            required
-                        />
-                        <label htmlFor="password">Password</label>
-                        <input
-                            type="password"
-                            id="password"
-                            onChange={e => setPwd(e.target.value)}
-                            value={pwd}
-                            required
-                        />
-                        <button>Sign in</button>
-                    </form>
-                    <p>
-                        Don't have an account?<br/>
-                        <span>
+        <section>
+            <p className={"errmsg"} aria-live={"assertive"}>{errMsg}</p>
+            <h1>Sign in</h1>
+            <form onSubmit={handleSubmit}>
+                <label htmlFor="username">Username</label>
+                <input
+                    type="text"
+                    id="username"
+                    autoComplete="off"
+                    onChange={e => setUser(e.target.value)}
+                    value={user}
+                    required
+                />
+                <label htmlFor="password">Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    onChange={e => setPwd(e.target.value)}
+                    value={pwd}
+                    required
+                />
+                <button>Sign in</button>
+            </form>
+            <p>
+                Don't have an account?<br/>
+                <span>
                     <a href="#">Register</a>
                 </span>
-                    </p>
-                </section>
-            )}
-        </>
+            </p>
+        </section>
     );
 
 }

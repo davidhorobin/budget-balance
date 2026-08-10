@@ -2,6 +2,7 @@ import Login from "./Login";
 import {Routes, Route} from "react-router-dom";
 import Layout from "./Layout";
 import Transactions from "./Transactions";
+import RequireAuth from "./RequireAuth";
 
 function App() {
     return (
@@ -9,10 +10,11 @@ function App() {
             <Route path="/" element={<Layout/>}>
                 {/* Public routes */}
                 <Route path="login" element={<Login/>}/>
-                <Route path="transaction" element={<Transactions/>}/>
 
                 {/* Protected routes */}
-                <Route/>
+                <Route element={<RequireAuth/>}>
+                    <Route path="transaction" element={<Transactions/>}/>
+                </Route>
             </Route>
         </Routes>
     );
