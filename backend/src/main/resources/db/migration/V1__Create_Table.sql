@@ -1,3 +1,4 @@
+CREATE TYPE transaction_type AS ENUM ('Deposit', 'Purchase', 'Transfer', 'Withdrawal');
 CREATE TABLE IF NOT EXISTS counterparties
 (
     id   BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
@@ -31,9 +32,10 @@ CREATE TABLE IF NOT EXISTS refresh_tokens
 CREATE TABLE IF NOT EXISTS transactions
 (
     id              BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    bank_account_id BIGINT         NOT NULL REFERENCES bank_accounts (id),
-    counterparty_id BIGINT         NOT NULL REFERENCES counterparties (id),
-    amount          NUMERIC(12, 2) NOT NULL,
-    currency        VARCHAR(3)     NOT NULL CHECK (currency IN ('GBP', 'USD', 'EUR')),
-    time            TIMESTAMP      NOT NULL
+    bank_account_id BIGINT           NOT NULL REFERENCES bank_accounts (id),
+    counterparty_id BIGINT           NOT NULL REFERENCES counterparties (id),
+    amount          NUMERIC(12, 2)   NOT NULL,
+    currency        VARCHAR(3)       NOT NULL CHECK (currency IN ('GBP', 'USD', 'EUR')),
+    type            transaction_type NOT NULL,
+    time            TIMESTAMP        NOT NULL
 );

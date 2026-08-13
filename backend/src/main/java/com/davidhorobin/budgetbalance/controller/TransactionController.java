@@ -2,6 +2,7 @@ package com.davidhorobin.budgetbalance.controller;
 
 import com.davidhorobin.budgetbalance.dto.transaction.TransactionRequest;
 import com.davidhorobin.budgetbalance.dto.transaction.TransactionResponse;
+import com.davidhorobin.budgetbalance.enums.TransactionType;
 import com.davidhorobin.budgetbalance.service.TransactionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +32,7 @@ public class TransactionController {
 
     @PostMapping("/")
     public ResponseEntity<TransactionResponse> saveTransaction(@Valid @RequestBody TransactionRequest request) {
-        return ResponseEntity.ok(transactionService.saveTransaction(request));
+        return ResponseEntity.ok(transactionService.saveTransaction(request, TransactionType.Purchase));
     }
 
     @DeleteMapping("/{id}")

@@ -1,11 +1,14 @@
 package com.davidhorobin.budgetbalance.entity;
 
+import com.davidhorobin.budgetbalance.enums.TransactionType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -36,6 +39,11 @@ public class Transaction {
     @Column(nullable = false, length = 3)
     @NotNull
     private String currency;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    private TransactionType type;
 
     @Column(nullable = false)
     @PastOrPresent

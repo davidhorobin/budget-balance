@@ -2,9 +2,14 @@ package com.davidhorobin.budgetbalance.mapper;
 
 import com.davidhorobin.budgetbalance.dto.accounts.CreateRequest;
 import com.davidhorobin.budgetbalance.dto.accounts.CreateResponse;
+import com.davidhorobin.budgetbalance.dto.accounts.DepositRequest;
+import com.davidhorobin.budgetbalance.dto.accounts.DepositResponse;
+import com.davidhorobin.budgetbalance.dto.transaction.TransactionRequest;
+import com.davidhorobin.budgetbalance.dto.transaction.TransactionResponse;
 import com.davidhorobin.budgetbalance.entity.BankAccount;
 import com.davidhorobin.budgetbalance.entity.Counterparty;
 import com.davidhorobin.budgetbalance.entity.User;
+import com.davidhorobin.budgetbalance.enums.TransactionType;
 
 import java.math.BigDecimal;
 
@@ -21,5 +26,14 @@ public class AccountsMapper {
 
     public static CreateResponse toResponse(String name, BigDecimal balance, String bank) {
         return new CreateResponse(name, balance, bank);
+    }
+
+    public static TransactionRequest toTransactionRequest(DepositRequest request) {
+        return new TransactionRequest(
+                request.accountName(), "Deposit", request.amount(), request.currency(), request.time());
+    }
+
+    public static DepositResponse toDepositResponse(TransactionResponse response) {
+        return new DepositResponse(true);
     }
 }
