@@ -26,13 +26,15 @@ public class User implements UserDetails {
     private long id;
 
     @Column(unique = true, nullable = false, length = 100)
+    @NotNull
     private String username;
 
+    @Column(nullable = false, length = 255)
     @NotBlank
     private String password;
 
-    @Email
     @Column(unique = true, nullable = false, length = 100)
+    @Email
     private String email;
 
     @Override

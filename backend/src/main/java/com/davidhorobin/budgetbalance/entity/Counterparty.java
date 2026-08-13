@@ -1,6 +1,7 @@
 package com.davidhorobin.budgetbalance.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Entity
-@Table(name = "counterparty")
+@Table(name = "counterparties")
 public class Counterparty {
 
     @Id
@@ -17,6 +18,7 @@ public class Counterparty {
     private long id;
 
     @Column(nullable = false, length = 100, unique = true)
+    @NotNull
     private String name;
 
 }

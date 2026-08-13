@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public record TransactionResponse(
-        Integer id,
+        Long id,
         BigDecimal value,
         String counterparty,
         LocalDateTime time
