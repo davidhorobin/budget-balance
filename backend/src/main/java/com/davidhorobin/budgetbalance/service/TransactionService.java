@@ -2,17 +2,20 @@ package com.davidhorobin.budgetbalance.service;
 
 import com.davidhorobin.budgetbalance.dto.transaction.TransactionRequest;
 import com.davidhorobin.budgetbalance.dto.transaction.TransactionResponse;
+import com.davidhorobin.budgetbalance.entity.BankAccount;
 import com.davidhorobin.budgetbalance.entity.Counterparty;
 import com.davidhorobin.budgetbalance.entity.Transaction;
 import com.davidhorobin.budgetbalance.mapper.TransactionMapper;
 import com.davidhorobin.budgetbalance.repository.CounterpartyRepo;
 import com.davidhorobin.budgetbalance.repository.TransactionRepo;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.sql.Time;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,6 +25,7 @@ import java.util.List;
 public class TransactionService {
     private final TransactionRepo transactionRepo;
     private final CounterpartyRepo counterpartyRepo;
+    private final CounterpartyService counterpartyService;
 
     public List<TransactionResponse> getAllTransactions() {
         return transactionRepo.findAllByOrderByTimeAsc().stream()
@@ -38,13 +42,14 @@ public class TransactionService {
     }
 
     public TransactionResponse saveTransaction(TransactionRequest request) {
-        Transaction t = TransactionMapper.toEntity(request);
-        if (t.getTime() == null) t.setTime(LocalDateTime.now());
+        BankAccount account = resolveBankAccount(request.bankAccount());
+        Counterparty counterparty = counterpartyService.resolveOrCreateCounterparty(request.counterparty());
+        LocalDateTime time = LocalDateTime.now();
+        if (request.time() != null) time = request.time();
 
-        Counterparty counterparty = resolveCounterparty(request.counterparty());
-        t.setCounterparty(counterparty);
+        Transaction transaction = TransactionMapper.toEntity(request, account, counterparty, time);
 
-        Transaction saved = transactionRepo.save(t);
+        Transaction saved = transactionRepo.save(transaction);
         log.info("Transaction with id {} saved", saved.getId());
         return TransactionMapper.toResponse(saved);
     }
@@ -53,14 +58,8 @@ public class TransactionService {
         transactionRepo.deleteById(id);
     }
 
-    private Counterparty resolveCounterparty(String name) {
-        String normalisedName = name.trim().toLowerCase();
-        return counterpartyRepo.findByName(normalisedName)
-                .orElseGet(() -> {
-                    Counterparty counterparty = new Counterparty();
-                    counterparty.setName(normalisedName);
-                    return counterpartyRepo.save(counterparty);
-                });
+    private BankAccount resolveBankAccount(@NotBlank String s) {
+        return null;
     }
 
 }

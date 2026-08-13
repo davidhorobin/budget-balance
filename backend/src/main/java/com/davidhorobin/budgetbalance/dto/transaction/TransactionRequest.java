@@ -9,8 +9,10 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public record TransactionRequest(
-        @NotNull @Positive BigDecimal amount,
+        @NotBlank String bankAccount,
         @NotBlank String counterparty,
+        @NotNull @Positive BigDecimal amount,
+        @NotNull String currency,
         @Nullable LocalDateTime time
 ) {
 }
