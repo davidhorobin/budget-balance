@@ -17,4 +17,9 @@ public interface RefreshTokenRepo extends JpaRepository<RefreshToken, Long> {
     @Transactional
     @Query(value = "UPDATE refresh_tokens SET revoked = true WHERE user_id = :userId", nativeQuery = true)
     int revokeAllByUserId(@Param("userId") Long userId);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE refresh_tokens SET revoked = true WHERE user_id = :userId AND NOT hash = :hash", nativeQuery = true)
+    int revokeAllExceptCurrent(@Param("userId") Long userId, @Param("hash") String hash);
 }
