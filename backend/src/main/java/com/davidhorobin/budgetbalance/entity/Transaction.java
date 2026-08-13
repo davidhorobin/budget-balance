@@ -21,10 +21,6 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = false)
-    @NotNull
-    private BigDecimal amount;
-
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "bank_account_id", nullable = false)
     private BankAccount bankAccount;
@@ -33,7 +29,15 @@ public class Transaction {
     @JoinColumn(name = "counterparty_id", nullable = false)
     private Counterparty counterparty;
 
-    @Column(nullable = true)
+    @Column(nullable = false, precision = 12, scale = 2)
+    @NotNull
+    private BigDecimal amount;
+
+    @Column(nullable = false, length = 3)
+    @NotNull
+    private String currency;
+
+    @Column(nullable = false)
     @PastOrPresent
     private LocalDateTime time;
 

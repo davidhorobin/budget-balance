@@ -29,7 +29,7 @@ public class User implements UserDetails {
     @NotNull
     private String username;
 
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false, length = 60)
     @NotBlank
     private String password;
 

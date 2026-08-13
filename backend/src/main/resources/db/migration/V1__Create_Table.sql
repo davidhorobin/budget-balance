@@ -7,16 +7,18 @@ CREATE TABLE IF NOT EXISTS users
 (
     id       BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     username VARCHAR(100) UNIQUE NOT NULL,
-    password VARCHAR(255)        NOT NULL,
+    password VARCHAR(60)         NOT NULL,
     email    VARCHAR(100) UNIQUE NOT NULL
 );
 CREATE TABLE IF NOT EXISTS bank_accounts
 (
     id              BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    name            VARCHAR(100)   NOT NULL,
     user_id         BIGINT         NOT NULL REFERENCES users (id) ON DELETE CASCADE,
-    counterparty_id BIGINT         NOT NULL REFERENCES counterparties (id) ON DELETE SET NULL,
+    counterparty_id BIGINT         NOT NULL REFERENCES counterparties (id),
     balance         NUMERIC(12, 2) NOT NULL,
-    UNIQUE (user_id, counterparty_id)
+    currency        VARCHAR(3)     NOT NULL CHECK (currency IN ('GBP', 'USD', 'EUR')),
+    CONSTRAINT uq_name_user UNIQUE (name, user_id)
 );
 CREATE TABLE IF NOT EXISTS refresh_tokens
 (
@@ -29,8 +31,9 @@ CREATE TABLE IF NOT EXISTS refresh_tokens
 CREATE TABLE IF NOT EXISTS transactions
 (
     id              BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    amount          NUMERIC(12, 2) NOT NULL,
     bank_account_id BIGINT         NOT NULL REFERENCES bank_accounts (id),
     counterparty_id BIGINT         NOT NULL REFERENCES counterparties (id),
-    time            TIMESTAMPTZ    NOT NULL DEFAULT now()
+    amount          NUMERIC(12, 2) NOT NULL,
+    currency        VARCHAR(3)     NOT NULL CHECK (currency IN ('GBP', 'USD', 'EUR')),
+    time            TIMESTAMP      NOT NULL
 );
