@@ -63,4 +63,12 @@ public class RefreshTokenService {
 
     }
 
+    public boolean invalidateOtherTokens(String refreshToken) {
+        Optional<RefreshToken> token = refreshTokenRepo.findByToken(DigestUtils.sha256Hex(refreshToken));
+        if (token.isEmpty()) return false;
+        RefreshToken saved = token.get();
+        return (refreshTokenRepo.revokeAllExceptCurrent(saved.getUser().getId(), saved.getToken()) == 1);
+
+    }
+
 }

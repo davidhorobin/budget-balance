@@ -54,6 +54,8 @@ public class AuthService {
             String accessToken = jwtService.generateAccessToken(user);
             String refreshToken = refreshTokenService.create(user);
 
+            refreshTokenService.invalidateOtherTokens(refreshToken);
+
             return new LoginResponse(accessToken, refreshToken);
         } catch (AuthenticationException e) {
             log.error(e.getMessage());
