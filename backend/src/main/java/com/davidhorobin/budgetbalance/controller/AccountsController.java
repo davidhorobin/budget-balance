@@ -21,7 +21,7 @@ public class AccountsController {
         return ResponseEntity.ok().body(accountsService.createAccount(request));
     }
 
-    @GetMapping("/all")
+    @GetMapping("/info")
     public ResponseEntity<Integer> getTotalBalance() {
         return ResponseEntity.ok().body(accountsService.getAccountsTotal());
     }
