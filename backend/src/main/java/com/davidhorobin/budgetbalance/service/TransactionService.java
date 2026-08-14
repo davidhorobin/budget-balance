@@ -9,6 +9,7 @@ import com.davidhorobin.budgetbalance.entity.Counterparty;
 import com.davidhorobin.budgetbalance.entity.Transaction;
 import com.davidhorobin.budgetbalance.entity.User;
 import com.davidhorobin.budgetbalance.enums.TransactionType;
+import com.davidhorobin.budgetbalance.exception.InsufficientBalanceException;
 import com.davidhorobin.budgetbalance.mapper.AccountsMapper;
 import com.davidhorobin.budgetbalance.mapper.TransactionMapper;
 import com.davidhorobin.budgetbalance.repository.AccountsRepo;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -60,7 +62,13 @@ public class TransactionService {
         if (type == TransactionType.Deposit) {
             accountsRepo.adjustBalance(account.getId(), request.amount());
         } else if (type == TransactionType.Purchase) {
-            accountsRepo.adjustBalance(account.getId(), request.amount().negate());
+            int x = accountsRepo.adjustBalance(account.getId(), request.amount().negate());
+            if (x == 0) {
+                DecimalFormat df = new DecimalFormat("#,###.00");
+                throw new InsufficientBalanceException(
+                        "Account named '%s' has lower balance than requested payment of %s."
+                                .formatted(account.getName(), df.format(request.amount())));
+            }
         }
         Transaction transaction = TransactionMapper.toEntity(request, account, counterparty, type, time);
         Transaction saved = transactionRepo.save(transaction);

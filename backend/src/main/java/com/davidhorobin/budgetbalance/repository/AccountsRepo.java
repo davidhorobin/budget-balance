@@ -15,6 +15,6 @@ public interface AccountsRepo extends JpaRepository<BankAccount, Long> {
 
     @Modifying
     @Transactional
-    @Query("UPDATE BankAccount b SET b.balance = b.balance + :amount WHERE b.id = :id")
+    @Query("UPDATE BankAccount b SET b.balance = b.balance + :amount WHERE b.id = :id AND b.balance + :amount >= 0")
     int adjustBalance(@Param("id") long id, @Param("amount") BigDecimal amount);
 }
