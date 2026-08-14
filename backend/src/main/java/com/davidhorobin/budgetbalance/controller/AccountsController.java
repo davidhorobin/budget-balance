@@ -1,9 +1,6 @@
 package com.davidhorobin.budgetbalance.controller;
 
-import com.davidhorobin.budgetbalance.dto.accounts.CreateRequest;
-import com.davidhorobin.budgetbalance.dto.accounts.CreateResponse;
-import com.davidhorobin.budgetbalance.dto.accounts.DepositRequest;
-import com.davidhorobin.budgetbalance.dto.accounts.DepositResponse;
+import com.davidhorobin.budgetbalance.dto.accounts.*;
 import com.davidhorobin.budgetbalance.service.AccountsService;
 import com.davidhorobin.budgetbalance.service.TransactionService;
 import jakarta.validation.Valid;
@@ -23,6 +20,11 @@ public class AccountsController {
     @PostMapping("/new")
     public ResponseEntity<CreateResponse> createAccount(@Valid @RequestBody CreateRequest request) {
         return ResponseEntity.ok().body(accountsService.createAccount(request));
+    }
+
+    @GetMapping("/info")
+    public ResponseEntity<InfoResponse> getAccountInfo() {
+        return ResponseEntity.ok().body(accountsService.getAllAccounts());
     }
 
     @PatchMapping("/deposit")

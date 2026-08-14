@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 public interface AccountsRepo extends JpaRepository<BankAccount, Long> {
@@ -17,4 +18,6 @@ public interface AccountsRepo extends JpaRepository<BankAccount, Long> {
     @Transactional
     @Query("UPDATE BankAccount b SET b.balance = b.balance + :amount WHERE b.id = :id AND b.balance + :amount >= 0")
     int adjustBalance(@Param("id") long id, @Param("amount") BigDecimal amount);
+
+    List<BankAccount> findAllByUserId(long id);
 }
