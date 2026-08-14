@@ -1,6 +1,7 @@
 package com.davidhorobin.budgetbalance.mapper;
 
 import com.davidhorobin.budgetbalance.dto.accounts.CreateRequest;
+import com.davidhorobin.budgetbalance.dto.accounts.CreateResponse;
 import com.davidhorobin.budgetbalance.entity.BankAccount;
 import com.davidhorobin.budgetbalance.entity.Counterparty;
 import com.davidhorobin.budgetbalance.entity.User;
@@ -26,5 +27,14 @@ public class AccountsMapperTest {
         assertSame(counterparty, a.getCounterparty());
         assertEquals(BigDecimal.valueOf(150), a.getBalance());
         assertEquals("GBP", a.getCurrency());
+    }
+
+    @Test
+    void toResponse_mapsAllFields() {
+        CreateResponse result = AccountsMapper.toRespons("current", BigDecimal.valueOf(100.25), "NatWest");
+
+        assertEquals("current", result.name());
+        assertEquals(BigDecimal.valueOf(100.25), result.balance());
+        assertEquals("NatWest", result.bank());
     }
 }
