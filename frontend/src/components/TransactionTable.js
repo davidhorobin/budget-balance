@@ -3,19 +3,17 @@ const TransactionTable = ({transactions}) => {
         <table>
             <thead>
             <tr>
-                <th>ID</th>
+                <th>Time</th>
                 <th>Counterparty</th>
                 <th>Value</th>
-                <th>Time</th>
             </tr>
             </thead>
             <tbody>
             {transactions.map((t) => (
-                <tr key={t.id}>
-                    <td>{t.id}</td>
+                <tr>
+                    <td>{t.time}</td>
                     <td>{t.counterparty}</td>
                     <td>{t.value}</td>
-                    <td>{t.time}</td>
                 </tr>
             ))}
             </tbody>
