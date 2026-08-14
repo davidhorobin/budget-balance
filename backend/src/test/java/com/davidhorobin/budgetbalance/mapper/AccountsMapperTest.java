@@ -31,7 +31,7 @@ public class AccountsMapperTest {
 
     @Test
     void toResponse_mapsAllFields() {
-        CreateResponse result = AccountsMapper.toRespons("current", BigDecimal.valueOf(100.25), "NatWest");
+        CreateResponse result = AccountsMapper.toResponse("current", BigDecimal.valueOf(100.25), "NatWest");
 
         assertEquals("current", result.name());
         assertEquals(BigDecimal.valueOf(100.25), result.balance());
