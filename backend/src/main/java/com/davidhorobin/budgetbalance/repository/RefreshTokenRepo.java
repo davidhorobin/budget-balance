@@ -1,7 +1,6 @@
 package com.davidhorobin.budgetbalance.repository;
 
 import com.davidhorobin.budgetbalance.entity.RefreshToken;
-import com.davidhorobin.budgetbalance.entity.User;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

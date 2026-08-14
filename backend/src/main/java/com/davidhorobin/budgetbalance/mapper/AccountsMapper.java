@@ -9,7 +9,6 @@ import com.davidhorobin.budgetbalance.dto.transaction.TransactionResponse;
 import com.davidhorobin.budgetbalance.entity.BankAccount;
 import com.davidhorobin.budgetbalance.entity.Counterparty;
 import com.davidhorobin.budgetbalance.entity.User;
-import com.davidhorobin.budgetbalance.enums.TransactionType;
 
 import java.math.BigDecimal;
 

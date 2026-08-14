@@ -13,16 +13,13 @@ import com.davidhorobin.budgetbalance.exception.InsufficientBalanceException;
 import com.davidhorobin.budgetbalance.mapper.AccountsMapper;
 import com.davidhorobin.budgetbalance.mapper.TransactionMapper;
 import com.davidhorobin.budgetbalance.repository.AccountsRepo;
-import com.davidhorobin.budgetbalance.repository.CounterpartyRepo;
 import com.davidhorobin.budgetbalance.repository.TransactionRepo;
-import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.List;

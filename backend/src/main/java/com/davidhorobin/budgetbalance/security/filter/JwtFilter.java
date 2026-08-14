@@ -3,7 +3,6 @@ package com.davidhorobin.budgetbalance.security.filter;
 import com.davidhorobin.budgetbalance.security.jwt.JwtService;
 import com.davidhorobin.budgetbalance.security.userdetails.CustomUserDetailsService;
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwt;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

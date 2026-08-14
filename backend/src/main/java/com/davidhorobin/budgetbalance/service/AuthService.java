@@ -1,12 +1,14 @@
 package com.davidhorobin.budgetbalance.service;
 
-import com.davidhorobin.budgetbalance.dto.auth.*;
-import com.davidhorobin.budgetbalance.entity.RefreshToken;
-import com.davidhorobin.budgetbalance.exception.InvalidCredentialsException;
-import com.davidhorobin.budgetbalance.security.jwt.JwtService;
+import com.davidhorobin.budgetbalance.dto.auth.LoginRequest;
+import com.davidhorobin.budgetbalance.dto.auth.LoginResponse;
+import com.davidhorobin.budgetbalance.dto.auth.RegisterRequest;
+import com.davidhorobin.budgetbalance.dto.auth.RegisterResponse;
 import com.davidhorobin.budgetbalance.entity.User;
+import com.davidhorobin.budgetbalance.exception.InvalidCredentialsException;
 import com.davidhorobin.budgetbalance.mapper.AuthMapper;
 import com.davidhorobin.budgetbalance.repository.UserRepo;
+import com.davidhorobin.budgetbalance.security.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;

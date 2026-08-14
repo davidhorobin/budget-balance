@@ -3,8 +3,6 @@ package com.davidhorobin.budgetbalance.config;
 import com.davidhorobin.budgetbalance.security.filter.JwtFilter;
 import com.davidhorobin.budgetbalance.security.userdetails.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
