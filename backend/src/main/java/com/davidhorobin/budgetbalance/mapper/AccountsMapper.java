@@ -33,6 +33,6 @@ public class AccountsMapper {
     }
 
     public static DepositResponse toDepositResponse(TransactionResponse response) {
-        return new DepositResponse(true);
+        return new DepositResponse(response.counterparty(), response.value(), response.time());
     }
 }
