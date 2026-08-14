@@ -2,6 +2,7 @@ package com.davidhorobin.budgetbalance.service;
 
 import com.davidhorobin.budgetbalance.dto.auth.*;
 import com.davidhorobin.budgetbalance.entity.RefreshToken;
+import com.davidhorobin.budgetbalance.exception.InvalidCredentialsException;
 import com.davidhorobin.budgetbalance.security.jwt.JwtService;
 import com.davidhorobin.budgetbalance.entity.User;
 import com.davidhorobin.budgetbalance.mapper.AuthMapper;
@@ -40,27 +41,24 @@ public class AuthService {
 
 
     public LoginResponse verify(LoginRequest loginRequest) {
-        Optional<User> stored = userRepo.findByUsername(loginRequest.username());
-        if (stored.isEmpty()) {
-            log.error("Username not found {}", loginRequest.username());
-            return new LoginResponse(null, null);
-        }
-        User user = stored.get();
+        User user = userRepo.findByUsername(loginRequest.username()).orElseThrow(
+                () -> new InvalidCredentialsException("Invalid username or password")
+        );
         try {
             Authentication auth = authManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.username(), loginRequest.password())
             );
-
-            String accessToken = jwtService.generateAccessToken(user);
-            String refreshToken = refreshTokenService.create(user);
-
-            refreshTokenService.invalidateOtherTokens(refreshToken);
-
-            return new LoginResponse(accessToken, refreshToken);
         } catch (AuthenticationException e) {
             log.error(e.getMessage());
-            return new LoginResponse(null, null);
+            throw new InvalidCredentialsException("Invalid username or password");
         }
+
+        String accessToken = jwtService.generateAccessToken(user);
+        String refreshToken = refreshTokenService.create(user);
+
+        refreshTokenService.invalidateOtherTokens(refreshToken);
+
+        return new LoginResponse(accessToken, refreshToken);
     }
 
 }
