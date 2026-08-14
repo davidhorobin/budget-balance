@@ -2,12 +2,15 @@ package com.davidhorobin.budgetbalance.mapper;
 
 import com.davidhorobin.budgetbalance.dto.accounts.CreateRequest;
 import com.davidhorobin.budgetbalance.dto.accounts.CreateResponse;
+import com.davidhorobin.budgetbalance.dto.accounts.DepositRequest;
+import com.davidhorobin.budgetbalance.dto.transaction.TransactionRequest;
 import com.davidhorobin.budgetbalance.entity.BankAccount;
 import com.davidhorobin.budgetbalance.entity.Counterparty;
 import com.davidhorobin.budgetbalance.entity.User;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -36,5 +39,19 @@ public class AccountsMapperTest {
         assertEquals("current", result.name());
         assertEquals(BigDecimal.valueOf(100.25), result.balance());
         assertEquals("NatWest", result.bank());
+    }
+
+    @Test
+    void toTransactionRequest_mapsAllFields() {
+        LocalDateTime time = LocalDateTime.now();
+        DepositRequest request = new DepositRequest("savings", BigDecimal.valueOf(123.45), "GBP", time);
+
+        TransactionRequest result = AccountsMapper.toTransactionRequest(request);
+
+        assertEquals("savings", result.bankAccount());
+        assertEquals("Deposit", result.counterparty());
+        assertEquals(BigDecimal.valueOf(123.45), result.amount());
+        assertEquals("GBP", result.currency());
+        assertEquals(time, result.time());
     }
 }
