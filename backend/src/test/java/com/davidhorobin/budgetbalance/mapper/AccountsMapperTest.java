@@ -3,7 +3,9 @@ package com.davidhorobin.budgetbalance.mapper;
 import com.davidhorobin.budgetbalance.dto.accounts.CreateRequest;
 import com.davidhorobin.budgetbalance.dto.accounts.CreateResponse;
 import com.davidhorobin.budgetbalance.dto.accounts.DepositRequest;
+import com.davidhorobin.budgetbalance.dto.accounts.DepositResponse;
 import com.davidhorobin.budgetbalance.dto.transaction.TransactionRequest;
+import com.davidhorobin.budgetbalance.dto.transaction.TransactionResponse;
 import com.davidhorobin.budgetbalance.entity.BankAccount;
 import com.davidhorobin.budgetbalance.entity.Counterparty;
 import com.davidhorobin.budgetbalance.entity.User;
@@ -52,6 +54,18 @@ public class AccountsMapperTest {
         assertEquals("Deposit", result.counterparty());
         assertEquals(BigDecimal.valueOf(123.45), result.amount());
         assertEquals("GBP", result.currency());
+        assertEquals(time, result.time());
+    }
+
+    @Test
+    void toDepositResponse_mapsAllFields() {
+        LocalDateTime time = LocalDateTime.now();
+        TransactionResponse request = new TransactionResponse(10L, BigDecimal.valueOf(10.20), "Deposit", time);
+
+        DepositResponse result = AccountsMapper.toDepositResponse(request);
+
+        assertEquals("Deposit", result.counterparty());
+        assertEquals(BigDecimal.valueOf(10.20), result.value());
         assertEquals(time, result.time());
     }
 }
