@@ -5,6 +5,7 @@ import com.davidhorobin.budgetbalance.dto.accounts.CreateResponse;
 import com.davidhorobin.budgetbalance.dto.accounts.DepositRequest;
 import com.davidhorobin.budgetbalance.dto.accounts.DepositResponse;
 import com.davidhorobin.budgetbalance.service.AccountsService;
+import com.davidhorobin.budgetbalance.service.TransactionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @Validated
 public class AccountsController {
     private final AccountsService accountsService;
+    private final TransactionService transactionService;
 
     @PostMapping("/new")
     public ResponseEntity<CreateResponse> createAccount(@Valid @RequestBody CreateRequest request) {
@@ -25,6 +27,6 @@ public class AccountsController {
 
     @PatchMapping("/deposit")
     public ResponseEntity<DepositResponse> deposit(@Valid @RequestBody DepositRequest request) {
-        return ResponseEntity.ok().body(accountsService.deposit(request));
+        return ResponseEntity.ok().body(transactionService.deposit(request));
     }
 }

@@ -1,11 +1,14 @@
 package com.davidhorobin.budgetbalance.service;
 
+import com.davidhorobin.budgetbalance.dto.accounts.DepositRequest;
+import com.davidhorobin.budgetbalance.dto.accounts.DepositResponse;
 import com.davidhorobin.budgetbalance.dto.transaction.TransactionRequest;
 import com.davidhorobin.budgetbalance.dto.transaction.TransactionResponse;
 import com.davidhorobin.budgetbalance.entity.BankAccount;
 import com.davidhorobin.budgetbalance.entity.Counterparty;
 import com.davidhorobin.budgetbalance.entity.Transaction;
 import com.davidhorobin.budgetbalance.enums.TransactionType;
+import com.davidhorobin.budgetbalance.mapper.AccountsMapper;
 import com.davidhorobin.budgetbalance.mapper.TransactionMapper;
 import com.davidhorobin.budgetbalance.repository.AccountsRepo;
 import com.davidhorobin.budgetbalance.repository.CounterpartyRepo;
@@ -17,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -27,6 +31,7 @@ public class TransactionService {
     private final TransactionRepo transactionRepo;
     private final CounterpartyService counterpartyService;
     private final AccountsRepo accountsRepo;
+    private final AccountsService accountsService;
 
     public List<TransactionResponse> getAllTransactions() {
         return transactionRepo.findAllByOrderByTimeAsc().stream()
@@ -43,7 +48,8 @@ public class TransactionService {
     }
 
     public TransactionResponse saveTransaction(TransactionRequest request, TransactionType type) {
-        BankAccount account = resolveBankAccount(request.bankAccount());
+        BankAccount account = accountsService.resolveBankAccount(request.bankAccount());
+        if (account == null) return null;
         Counterparty counterparty = counterpartyService.resolveOrCreateCounterparty(request.counterparty());
         LocalDateTime time = LocalDateTime.now();
         if (request.time() != null) time = request.time();
@@ -59,12 +65,16 @@ public class TransactionService {
         return TransactionMapper.toResponse(saved);
     }
 
-    public void deleteTransactionById(long id) {
-        transactionRepo.deleteById(id);
+    public DepositResponse deposit(DepositRequest request) {
+        return AccountsMapper.toDepositResponse(
+                saveTransaction(
+                        AccountsMapper.toTransactionRequest(request), TransactionType.Deposit
+                )
+        );
     }
 
-    private BankAccount resolveBankAccount(@NotBlank String s) {
-        return null;
+    public void deleteTransactionById(long id) {
+        transactionRepo.deleteById(id);
     }
 
 }

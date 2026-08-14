@@ -14,9 +14,9 @@ import com.davidhorobin.budgetbalance.enums.TransactionType;
 import java.math.BigDecimal;
 
 public class AccountsMapper {
-    public static BankAccount toEntity(CreateRequest request, User user, Counterparty counterparty) {
+    public static BankAccount toEntity(CreateRequest request, String name, User user, Counterparty counterparty) {
         BankAccount a = new BankAccount();
-        a.setName(request.name());
+        a.setName(name);
         a.setUser(user);
         a.setCounterparty(counterparty);
         a.setBalance(request.balance());
