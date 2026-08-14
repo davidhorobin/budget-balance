@@ -4,6 +4,7 @@ import Layout from "./Layout";
 import Transactions from "./Transactions";
 import RequireAuth from "./RequireAuth";
 import Home from "./Home";
+import Register from "./Register";
 
 function App() {
     return (
@@ -12,6 +13,7 @@ function App() {
                 {/* Public routes */}
                 <Route path="login" element={<Login/>}/>
                 <Route path="home" element={<Home/>}/>
+                <Route path="register" element={<Register/>}/>
 
                 {/* Protected routes */}
                 <Route element={<RequireAuth/>}>
