@@ -1,9 +1,6 @@
 package com.davidhorobin.budgetbalance.mapper;
 
-import com.davidhorobin.budgetbalance.dto.accounts.CreateRequest;
-import com.davidhorobin.budgetbalance.dto.accounts.CreateResponse;
-import com.davidhorobin.budgetbalance.dto.accounts.DepositRequest;
-import com.davidhorobin.budgetbalance.dto.accounts.DepositResponse;
+import com.davidhorobin.budgetbalance.dto.accounts.*;
 import com.davidhorobin.budgetbalance.dto.transaction.TransactionRequest;
 import com.davidhorobin.budgetbalance.dto.transaction.TransactionResponse;
 import com.davidhorobin.budgetbalance.entity.BankAccount;
@@ -34,5 +31,11 @@ public class AccountsMapper {
 
     public static DepositResponse toDepositResponse(TransactionResponse response) {
         return new DepositResponse(response.counterparty(), response.value(), response.time());
+    }
+
+    public static AccountInfo toAccountInfo(BankAccount account) {
+        return new AccountInfo(
+                account.getName(), account.getCounterparty().getName(), account.getBalance(), account.getCurrency()
+        );
     }
 }

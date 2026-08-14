@@ -1,5 +1,6 @@
 package com.davidhorobin.budgetbalance.service;
 
+import com.davidhorobin.budgetbalance.dto.accounts.AccountInfo;
 import com.davidhorobin.budgetbalance.dto.accounts.CreateRequest;
 import com.davidhorobin.budgetbalance.dto.accounts.CreateResponse;
 import com.davidhorobin.budgetbalance.dto.accounts.InfoResponse;
@@ -13,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -39,11 +41,13 @@ public class AccountsService {
     public InfoResponse getAllAccounts() {
         User user = userService.getCurrentUser();
         List<BankAccount> accounts = accountsRepo.findAllByUserId(user.getId());
+        List<AccountInfo> accountsInfo = new ArrayList<>();
         BigDecimal sum = BigDecimal.ZERO;
         for (BankAccount account : accounts) {
             sum = sum.add(account.getBalance());
+            accountsInfo.add(AccountsMapper.toAccountInfo(account));
         }
-        return new InfoResponse(sum, accounts);
+        return new InfoResponse(sum, accountsInfo);
     }
 
     public BankAccount resolveBankAccount(String name) {
