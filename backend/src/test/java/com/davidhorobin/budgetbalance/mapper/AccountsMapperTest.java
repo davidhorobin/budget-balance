@@ -60,7 +60,7 @@ public class AccountsMapperTest {
     @Test
     void toDepositResponse_mapsAllFields() {
         LocalDateTime time = LocalDateTime.now();
-        TransactionResponse request = new TransactionResponse(10L, BigDecimal.valueOf(10.20), "Deposit", time);
+        TransactionResponse request = new TransactionResponse(BigDecimal.valueOf(10.20), "Deposit", time);
 
         DepositResponse result = AccountsMapper.toDepositResponse(request);
 

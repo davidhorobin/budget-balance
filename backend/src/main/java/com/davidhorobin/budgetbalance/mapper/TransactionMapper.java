@@ -33,7 +33,6 @@ public class TransactionMapper {
         if (t.getCounterparty() != null) name = t.getCounterparty().getName();
 
         return new TransactionResponse(
-                t.getId(),
                 t.getAmount(),
                 name,
                 t.getTime()
