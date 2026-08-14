@@ -1,7 +1,7 @@
 import {useState, useEffect} from "react";
-import useAuth from "./hooks/useAuth";
+import useAuth from "../hooks/useAuth";
 import TransactionTable from "./TransactionTable";
-import useAxiosPrivate from "./hooks/useAxiosPrivate";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import {Link} from "react-router-dom";
 
 const TRANSACTION_URL = "/transaction/"
