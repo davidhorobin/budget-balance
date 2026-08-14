@@ -3,7 +3,6 @@ package com.davidhorobin.budgetbalance.service;
 import com.davidhorobin.budgetbalance.dto.auth.LoginRequest;
 import com.davidhorobin.budgetbalance.dto.auth.LoginResponse;
 import com.davidhorobin.budgetbalance.dto.auth.RegisterRequest;
-import com.davidhorobin.budgetbalance.dto.auth.RegisterResponse;
 import com.davidhorobin.budgetbalance.entity.User;
 import com.davidhorobin.budgetbalance.exception.InvalidCredentialsException;
 import com.davidhorobin.budgetbalance.mapper.AuthMapper;
@@ -31,14 +30,12 @@ public class AuthService {
     private final JwtService jwtService;
     private final RefreshTokenService refreshTokenService;
 
-    public RegisterResponse register(RegisterRequest registerRequest) {
+    public void register(RegisterRequest registerRequest) {
         User user = AuthMapper.toEntity(registerRequest);
         user.setPassword(encoder.encode(user.getPassword()));
         Optional<User> check = userRepo.findByUsername(user.getUsername());
-        if (check.isPresent())
-            return new RegisterResponse(false);
+        if (check.isPresent()) return;
         userRepo.save(user);
-        return new RegisterResponse(true);
     }
 
 
