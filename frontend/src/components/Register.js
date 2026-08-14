@@ -1,8 +1,10 @@
-import {userRef, useState, useEffect, useRef} from 'react'
+import {useRef, useState, useEffect} from 'react'
 import {Link} from "react-router-dom";
+import axios from '../api/axios'
 
 const USER_REGEX = /^[A-Za-z0-9]{2,24}$/
 const PASS_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,24}$/
+const REGISTER_URL = '/auth/register'
 
 const Register = () => {
     const userRef = useRef();
@@ -51,7 +53,18 @@ const Register = () => {
             setErrMsg('Invalid details');
             return;
         }
-        setSuccess(true);
+        try {
+            await axios.post(REGISTER_URL,
+                JSON.stringify({username: user, password: pwd, email: "brian@email.com"})
+            );
+            setSuccess(true);
+        } catch (err) {
+            if (!err?.response) {
+                setErrMsg("No response from the server");
+            } else if (err.response?.status === 409) {
+                setErrMsg('Username already exists');
+            }
+        }
     }
 
     return (
