@@ -7,6 +7,7 @@ import com.davidhorobin.budgetbalance.dto.transaction.TransactionResponse;
 import com.davidhorobin.budgetbalance.entity.BankAccount;
 import com.davidhorobin.budgetbalance.entity.Counterparty;
 import com.davidhorobin.budgetbalance.entity.Transaction;
+import com.davidhorobin.budgetbalance.entity.User;
 import com.davidhorobin.budgetbalance.enums.TransactionType;
 import com.davidhorobin.budgetbalance.mapper.AccountsMapper;
 import com.davidhorobin.budgetbalance.mapper.TransactionMapper;
@@ -32,9 +33,11 @@ public class TransactionService {
     private final CounterpartyService counterpartyService;
     private final AccountsRepo accountsRepo;
     private final AccountsService accountsService;
+    private final UserService userService;
 
     public List<TransactionResponse> getAllTransactions() {
-        return transactionRepo.findAllByOrderByTimeAsc().stream()
+        User user = userService.getCurrentUser();
+        return transactionRepo.findAllByBankAccount_User_IdOrderByTimeAsc(user.getId()).stream()
                 .map(TransactionMapper::toResponse)
                 .toList();
     }
