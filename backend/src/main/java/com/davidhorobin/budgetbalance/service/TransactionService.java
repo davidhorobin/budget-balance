@@ -47,7 +47,7 @@ public class TransactionService {
         return TransactionMapper.toResponse(transaction);
     }
 
-    public TransactionResponse saveTransaction(TransactionRequest request, TransactionType type) {
+    private TransactionResponse saveTransaction(TransactionRequest request, TransactionType type) {
         BankAccount account = accountsService.resolveBankAccount(request.bankAccount());
         if (account == null) return null;
         Counterparty counterparty = counterpartyService.resolveOrCreateCounterparty(request.counterparty());
@@ -71,6 +71,10 @@ public class TransactionService {
                         AccountsMapper.toTransactionRequest(request), TransactionType.Deposit
                 )
         );
+    }
+
+    public TransactionResponse purchase(TransactionRequest request) {
+        return saveTransaction(request, TransactionType.Purchase);
     }
 
     public void deleteTransactionById(long id) {

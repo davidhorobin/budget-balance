@@ -32,7 +32,7 @@ public class TransactionController {
 
     @PostMapping("/")
     public ResponseEntity<TransactionResponse> saveTransaction(@Valid @RequestBody TransactionRequest request) {
-        return ResponseEntity.ok(transactionService.saveTransaction(request, TransactionType.Purchase));
+        return ResponseEntity.ok(transactionService.purchase(request));
     }
 
     @DeleteMapping("/{id}")
