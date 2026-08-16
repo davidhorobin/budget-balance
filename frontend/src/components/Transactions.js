@@ -28,7 +28,7 @@ const Transactions = () => {
     return (
         <section>
             <TransactionTable transactions={transactions}/>
-            <Link to="/home">CLICK</Link>
+            <Link to="/">Home</Link>
         </section>
     );
 }

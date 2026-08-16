@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react'
 import useAuth from "../hooks/useAuth";
 import axios from '../api/axios'
-import {useNavigate, useLocation} from "react-router-dom";
+import {useNavigate, useLocation, Link} from "react-router-dom";
 
 const LOGIN_URL = '/auth/login'
 
@@ -77,7 +77,7 @@ const Login = () => {
             <p>
                 Don't have an account?<br/>
                 <span>
-                    <a href="#">Register</a>
+                    <Link to="/register">Register</Link>
                 </span>
             </p>
         </section>

@@ -4,7 +4,11 @@ const Home = () => {
     return (
         <section>
             <h1>Welcome home.</h1>
-            <Link to="/transaction">Transactions</Link>
+            <nav>
+                <Link to="/login">Sign in</Link>
+                <Link to="/register">Register</Link>
+                <Link to="/transaction">Transactions</Link>
+            </nav>
         </section>
     );
 }
