@@ -5,6 +5,7 @@ import Transactions from "./Transactions";
 import RequireAuth from "./RequireAuth";
 import Home from "./Home";
 import Register from "./Register";
+import Accounts from "./Accounts";
 
 function App() {
     return (
@@ -17,6 +18,7 @@ function App() {
 
                 {/* Protected routes */}
                 <Route element={<RequireAuth/>}>
+                    <Route path="accounts/info" element={<Accounts/>}/>
                     <Route path="transaction" element={<Transactions/>}/>
                 </Route>
             </Route>
