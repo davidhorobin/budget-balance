@@ -1,6 +1,6 @@
 const TransactionTable = ({transactions}) => {
     return (
-        <table>
+        <table id="transaction-table">
             <thead>
             <tr>
                 <th>Time</th>

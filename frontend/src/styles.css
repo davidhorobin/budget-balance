@@ -1,0 +1,406 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+:root {
+    --paper: #f3f2ed;
+    --ink: #14171c;
+    --ink-soft: #62666e;
+    --hairline: #d9d7ce;
+    --ledger-green: #1e6f5c;
+    --signal-rust: #a8431d;
+
+    --font-display: 'Fraunces', serif;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+a:focus-visible, button:focus-visible {
+    outline: 2px dashed var(--ledger-green);
+    outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+    }
+}
+
+/* ---- Header ---- */
+#site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 32px;
+    border-bottom: 1px solid var(--hairline);
+    background: var(--paper);
+}
+
+#site-header h1 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 20px;
+    letter-spacing: -0.01em;
+    margin: 0;
+}
+
+#site-header h1::before {
+    content: '';
+    width: 4px;
+    height: 1.1em;
+    background: var(--ledger-green);
+}
+
+#site-header nav {
+    display: flex;
+    gap: 28px;
+}
+
+#site-header nav a {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    padding-bottom: 3px;
+    border-bottom: 1px solid transparent;
+    transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+#site-header nav a:hover {
+    color: var(--ink);
+    border-color: var(--ledger-green);
+}
+
+/* ---- Home hero ---- */
+#home {
+    padding: 72px 32px;
+    max-width: 640px;
+}
+
+#home h1 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-style: italic;
+    font-size: 40px;
+    margin: 0 0 40px;
+    color: var(--ink);
+}
+
+#home a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 4px;
+    border-top: 1px solid var(--hairline);
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 16px;
+    transition: background 0.15s ease, padding-left 0.15s ease;
+}
+
+#home a:last-of-type {
+    border-bottom: 1px solid var(--hairline);
+}
+
+#home a::after {
+    content: '\2192';
+    font-family: var(--font-mono);
+    color: var(--ledger-green);
+    transition: transform 0.15s ease;
+}
+
+#home a:hover {
+    padding-left: 10px;
+    background: rgba(30, 111, 92, 0.06);
+}
+
+#home a:hover::after {
+    transform: translateX(4px);
+}
+
+/* ---- Ledger tables (shared base) ---- */
+#transaction-table,
+#account-table {
+    width: 100%;
+    max-width: 960px;
+    margin: 24px 32px;
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+#transaction-table thead tr,
+#account-table thead tr {
+    box-shadow: 0 3px 0 0 var(--hairline);
+}
+
+#transaction-table th,
+#account-table th {
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    padding: 0 16px 10px;
+    border-bottom: 2px solid var(--ink);
+}
+
+#transaction-table td,
+#account-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--hairline);
+    vertical-align: middle;
+}
+
+#transaction-table tbody tr,
+#account-table tbody tr {
+    transition: background 0.12s ease, box-shadow 0.12s ease;
+}
+
+#transaction-table tbody tr:hover,
+#account-table tbody tr:hover {
+    background: rgba(30, 111, 92, 0.05);
+    box-shadow: inset 3px 0 0 0 var(--ledger-green);
+}
+
+/* ---- Transactions: Time / Counterparty / Value ---- */
+#transaction-table td:nth-child(1) {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--ink-soft);
+    width: 160px;
+}
+
+#transaction-table td:nth-child(2) {
+    font-weight: 500;
+}
+
+#transaction-table th:nth-child(3),
+#transaction-table td:nth-child(3) {
+    text-align: right;
+    font-family: var(--font-mono);
+    font-weight: 600;
+}
+
+/* ---- Accounts: Bank / Name / Balance / Currency ---- */
+#account-table td:nth-child(1) {
+    font-weight: 600;
+}
+
+#account-table td:nth-child(2) {
+    color: var(--ink-soft);
+}
+
+#account-table th:nth-child(3),
+#account-table td:nth-child(3) {
+    text-align: right;
+    font-family: var(--font-mono);
+    font-weight: 600;
+}
+
+#account-table th:nth-child(4),
+#account-table td:nth-child(4) {
+    text-align: center;
+}
+
+#account-table td:nth-child(4) {
+    display: inline-block;
+    margin-top: 4px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    border: 1px solid var(--hairline);
+    border-radius: 3px;
+    padding: 2px 8px;
+}
+
+/* ---- Auth forms (login / register) ---- */
+#login,
+#register,
+#register-success {
+    max-width: 400px;
+    margin: 56px auto;
+    padding: 40px 36px;
+    background: #fff;
+    border: 1px solid var(--hairline);
+}
+
+#login h1,
+#register h1,
+#register-success h1 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 28px;
+    margin: 0 0 28px;
+}
+
+#login form,
+#register form {
+    display: flex;
+    flex-direction: column;
+}
+
+#login label,
+#register label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-top: 18px;
+}
+
+#login input,
+#register input {
+    border: none;
+    border-bottom: 1px solid var(--hairline);
+    background: transparent;
+    padding: 8px 2px;
+    margin-top: 6px;
+    font-family: var(--font-body);
+    font-size: 15px;
+    color: var(--ink);
+    transition: border-color 0.15s ease;
+}
+
+#login input:focus,
+#register input:focus {
+    outline: none;
+    border-bottom: 2px solid var(--ledger-green);
+}
+
+#login input:invalid[aria-invalid="true"],
+#register input[aria-invalid="true"]:not(:placeholder-shown) {
+    border-bottom-color: var(--signal-rust, #a8431d);
+}
+
+#login button,
+#register button {
+    margin-top: 32px;
+    padding: 12px 20px;
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+#login button:hover,
+#register button:hover {
+    background: var(--ledger-green);
+}
+
+#login button:disabled,
+#register button:disabled {
+    background: var(--hairline);
+    color: var(--ink-soft);
+    cursor: not-allowed;
+}
+
+#login > p,
+#register > p,
+#register-success p {
+    margin-top: 20px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    text-align: center;
+}
+
+#login > p a,
+#register > p a,
+#register-success a {
+    color: var(--ledger-green);
+    font-weight: 500;
+    border-bottom: 1px solid var(--ledger-green);
+}
+
+.errmsg {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--signal-rust, #a8431d);
+    background: rgba(168, 67, 29, 0.08);
+    border-left: 3px solid var(--signal-rust, #a8431d);
+    padding: 8px 12px;
+    margin: 0 0 20px;
+}
+
+.instructions {
+    font-size: 12px;
+    color: var(--ink-soft);
+    background: var(--paper);
+    border-left: 3px solid var(--hairline);
+    padding: 6px 10px;
+    margin-top: 6px;
+}
+
+.offscreen {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 640px) {
+    #site-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+        padding: 18px 20px;
+    }
+
+    #home {
+        padding: 48px 20px;
+    }
+
+    #home h1 {
+        font-size: 30px;
+    }
+
+    #transaction-table,
+    #account-table {
+        margin: 16px 20px;
+    }
+
+    #login,
+    #register,
+    #register-success {
+        margin: 32px 16px;
+        padding: 28px 24px;
+    }
+}

@@ -2,7 +2,7 @@ import {Link} from "react-router-dom";
 
 const Header = () => {
     return (
-        <section>
+        <section id="site-header">
             <h1>budget-balance</h1>
             <nav>
                 <Link to="/">Home</Link>

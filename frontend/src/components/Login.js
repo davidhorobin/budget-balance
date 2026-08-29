@@ -51,7 +51,7 @@ const Login = () => {
     }
 
     return (
-        <section>
+        <section id="login">
             <p className={"errmsg"} aria-live={"assertive"}>{errMsg}</p>
             <h1>Sign in</h1>
             <form onSubmit={handleSubmit}>

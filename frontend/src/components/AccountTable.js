@@ -1,6 +1,6 @@
 const AccountTable = ({accounts}) => {
     return (
-        <table>
+        <table id="account-table">
             <thead>
             <tr>
                 <th>Bank</th>
