@@ -1,5 +1,5 @@
 import Login from "./Login";
-import {Routes, Route} from "react-router-dom";
+import {Route, Routes} from "react-router-dom";
 import usePersistLogin from "../hooks/usePersistLogin";
 import Layout from "./Layout";
 import Transactions from "./Transactions";
@@ -22,7 +22,7 @@ function App() {
                 {/* Protected routes */}
                 <Route element={<RequireAuth/>}>
                     <Route path="accounts/info" element={<Accounts/>}/>
-                    <Route path="transaction" element={<Transactions/>}/>
+                    <Route path="accounts/transactions" element={<Transactions/>}/>
                 </Route>
             </Route>
         </Routes>

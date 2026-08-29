@@ -1,8 +1,7 @@
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import useAuth from '../hooks/useAuth';
-import {useState, useEffect} from 'react'
+import {useEffect, useState} from 'react'
 import AccountTable from './AccountTable';
-import {Link} from "react-router-dom";
 
 const INFO_URL = "/accounts/info"
 
@@ -31,7 +30,6 @@ const Accounts = () => {
             <h1>Account dashboard</h1>
             <p>Total: {total}</p>
             <AccountTable accounts={accounts}/>
-            <Link to="/">Home</Link>
         </section>
     );
 }

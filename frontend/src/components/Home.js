@@ -4,11 +4,8 @@ const Home = () => {
     return (
         <section>
             <h1>Welcome home.</h1>
-            <nav>
-                <Link to="/login">Sign in</Link>
-                <Link to="/register">Register</Link>
-                <Link to="/transaction">Transactions</Link>
-            </nav>
+            <Link to="/accounts/transactions">Transactions</Link>
+            <Link to="/accounts/info">Dashboard</Link>
         </section>
     );
 }

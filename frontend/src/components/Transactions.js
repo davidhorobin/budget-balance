@@ -1,8 +1,7 @@
-import {useState, useEffect} from "react";
+import {useEffect, useState} from "react";
 import useAuth from "../hooks/useAuth";
 import TransactionTable from "./TransactionTable";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
-import {Link} from "react-router-dom";
 
 const TRANSACTION_URL = "/transaction/"
 
@@ -28,7 +27,6 @@ const Transactions = () => {
     return (
         <section>
             <TransactionTable transactions={transactions}/>
-            <Link to="/">Home</Link>
         </section>
     );
 }
