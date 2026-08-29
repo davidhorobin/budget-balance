@@ -1,5 +1,6 @@
 import Login from "./Login";
 import {Routes, Route} from "react-router-dom";
+import usePersistLogin from "../hooks/usePersistLogin";
 import Layout from "./Layout";
 import Transactions from "./Transactions";
 import RequireAuth from "./RequireAuth";
@@ -8,6 +9,8 @@ import Register from "./Register";
 import Accounts from "./Accounts";
 
 function App() {
+    const isLoading = usePersistLogin();
+    if (isLoading) return <p>Loading...</p>;
     return (
         <Routes>
             <Route path="/" element={<Layout/>}>
