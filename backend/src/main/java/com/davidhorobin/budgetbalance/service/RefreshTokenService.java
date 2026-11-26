@@ -56,7 +56,11 @@ public class RefreshTokenService {
             return new RefreshResponse(false);
         }
 
-        refreshTokenRepo.revokeAllByUserId(user.getId());
+        // Lost a race with a concurrent refresh of the same token: fail this one, don't treat it as reuse.
+        if (refreshTokenRepo.revokeIfActive(token.getId()) == 0) {
+            log.warn("Refresh token already rotated by a concurrent request");
+            return new RefreshResponse(false);
+        }
         String newAccessToken = jwtService.generateAccessToken(user);
         String newRefreshToken = create(user);
         return new RefreshResponse(true, newAccessToken, newRefreshToken);

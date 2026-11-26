@@ -9,11 +9,11 @@ const TransactionTable = ({transactions}) => {
             </tr>
             </thead>
             <tbody>
-            {transactions.map((t) => (
-                <tr>
+            {transactions.map((t, i) => (
+                <tr key={i}>
                     <td>{t.time}</td>
                     <td>{t.counterparty}</td>
-                    <td>{t.value}</td>
+                    <td>{t.type === "Purchase" ? "-" : "+"}{t.value}</td>
                 </tr>
             ))}
             </tbody>

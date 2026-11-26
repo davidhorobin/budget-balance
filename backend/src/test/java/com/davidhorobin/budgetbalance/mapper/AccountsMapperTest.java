@@ -9,6 +9,7 @@ import com.davidhorobin.budgetbalance.dto.transaction.TransactionResponse;
 import com.davidhorobin.budgetbalance.entity.BankAccount;
 import com.davidhorobin.budgetbalance.entity.Counterparty;
 import com.davidhorobin.budgetbalance.entity.User;
+import com.davidhorobin.budgetbalance.enums.TransactionType;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -60,7 +61,7 @@ public class AccountsMapperTest {
     @Test
     void toDepositResponse_mapsAllFields() {
         LocalDateTime time = LocalDateTime.now();
-        TransactionResponse request = new TransactionResponse(BigDecimal.valueOf(10.20), "Deposit", time);
+        TransactionResponse request = new TransactionResponse(BigDecimal.valueOf(10.20), "Deposit", time, TransactionType.Deposit);
 
         DepositResponse result = AccountsMapper.toDepositResponse(request);
 

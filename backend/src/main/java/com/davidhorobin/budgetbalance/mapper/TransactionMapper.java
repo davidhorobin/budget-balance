@@ -35,7 +35,8 @@ public class TransactionMapper {
         return new TransactionResponse(
                 t.getAmount(),
                 name,
-                t.getTime()
+                t.getTime(),
+                t.getType()
         );
     }
 }

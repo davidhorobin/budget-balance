@@ -11,7 +11,9 @@ import com.davidhorobin.budgetbalance.mapper.AccountsMapper;
 import com.davidhorobin.budgetbalance.repository.AccountsRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -27,8 +29,13 @@ public class AccountsService {
 
     public CreateResponse createAccount(CreateRequest request) {
         User user = userService.getCurrentUser();
-        Counterparty counterparty = counterpartyService.resolveOrCreateCounterparty(request.bank());
         String normalisedName = request.name().trim().toLowerCase();
+        // ponytail: check-then-insert; two simultaneous creates can still hit uq_name_user (500)
+        if (accountsRepo.findByNameAndUserId(normalisedName, user.getId()).isPresent()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "You already have an account named '%s'.".formatted(normalisedName));
+        }
+        Counterparty counterparty = counterpartyService.resolveOrCreateCounterparty(request.bank());
         BankAccount account = AccountsMapper.toEntity(request, normalisedName, user, counterparty);
         BankAccount saved = accountsRepo.save(account);
 

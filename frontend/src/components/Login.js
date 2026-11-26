@@ -32,7 +32,7 @@ const Login = () => {
                 }
             );
             const accessToken = res?.data?.accessToken;
-            setAuth({user, pwd, accessToken});
+            setAuth({user, accessToken});
             setUser('');
             setPwd('');
             navigate(from, {replace: true})

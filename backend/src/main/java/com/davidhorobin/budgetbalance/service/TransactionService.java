@@ -9,7 +9,6 @@ import com.davidhorobin.budgetbalance.entity.Counterparty;
 import com.davidhorobin.budgetbalance.entity.Transaction;
 import com.davidhorobin.budgetbalance.entity.User;
 import com.davidhorobin.budgetbalance.enums.TransactionType;
-import com.davidhorobin.budgetbalance.exception.InsufficientBalanceException;
 import com.davidhorobin.budgetbalance.mapper.AccountsMapper;
 import com.davidhorobin.budgetbalance.mapper.TransactionMapper;
 import com.davidhorobin.budgetbalance.repository.AccountsRepo;
@@ -18,9 +17,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -36,7 +35,7 @@ public class TransactionService {
 
     public List<TransactionResponse> getAllTransactions() {
         User user = userService.getCurrentUser();
-        return transactionRepo.findAllByBankAccount_User_IdOrderByTimeAsc(user.getId()).stream()
+        return transactionRepo.findAllByBankAccount_User_IdOrderByTimeDesc(user.getId()).stream()
                 .map(TransactionMapper::toResponse)
                 .toList();
     }
@@ -51,21 +50,23 @@ public class TransactionService {
 
     private TransactionResponse saveTransaction(TransactionRequest request, TransactionType type) {
         BankAccount account = accountsService.resolveBankAccount(request.bankAccount());
-        if (account == null) return null;
+        if (account == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "No account named '%s'.".formatted(request.bankAccount()));
+        }
+        if (!account.getCurrency().equals(request.currency())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Account '%s' is in %s, not %s.".formatted(account.getName(), account.getCurrency(), request.currency()));
+        }
         Counterparty counterparty = counterpartyService.resolveOrCreateCounterparty(request.counterparty());
         LocalDateTime time = LocalDateTime.now();
         if (request.time() != null) time = request.time();
 
+        // Purchases may take the balance below zero (overdraft, no limit).
         if (type == TransactionType.Deposit) {
             accountsRepo.adjustBalance(account.getId(), request.amount());
         } else if (type == TransactionType.Purchase) {
-            int x = accountsRepo.adjustBalance(account.getId(), request.amount().negate());
-            if (x == 0) {
-                DecimalFormat df = new DecimalFormat("#,###.00");
-                throw new InsufficientBalanceException(
-                        "Account named '%s' has lower balance than requested payment of %s."
-                                .formatted(account.getName(), df.format(request.amount())));
-            }
+            accountsRepo.adjustBalance(account.getId(), request.amount().negate());
         }
         Transaction transaction = TransactionMapper.toEntity(request, account, counterparty, type, time);
         Transaction saved = transactionRepo.save(transaction);
@@ -73,6 +74,8 @@ public class TransactionService {
         return TransactionMapper.toResponse(saved);
     }
 
+    // Balance update and transaction insert commit or roll back together.
+    @Transactional
     public DepositResponse deposit(DepositRequest request) {
         return AccountsMapper.toDepositResponse(
                 saveTransaction(
@@ -81,6 +84,7 @@ public class TransactionService {
         );
     }
 
+    @Transactional
     public TransactionResponse purchase(TransactionRequest request) {
         return saveTransaction(request, TransactionType.Purchase);
     }

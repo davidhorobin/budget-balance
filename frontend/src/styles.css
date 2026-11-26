@@ -375,8 +375,122 @@ a:focus-visible, button:focus-visible {
     border: 0;
 }
 
+/* ---- Entry forms: new transaction / new account (match auth forms) ---- */
+.entry-form {
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    margin: 32px;
+    padding: 32px 36px;
+    background: #fff;
+    border: 1px solid var(--hairline);
+}
+
+.entry-form h2 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 22px;
+    margin: 0 0 8px;
+}
+
+.entry-form label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-top: 18px;
+}
+
+.entry-form input,
+.entry-form select {
+    border: none;
+    border-bottom: 1px solid var(--hairline);
+    background: transparent;
+    padding: 8px 2px;
+    margin-top: 6px;
+    font-family: var(--font-body);
+    font-size: 15px;
+    color: var(--ink);
+}
+
+.entry-form input:focus,
+.entry-form select:focus {
+    outline: none;
+    border-bottom: 2px solid var(--ledger-green);
+}
+
+.entry-form button {
+    margin-top: 28px;
+    padding: 12px 20px;
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.entry-form button:hover {
+    background: var(--ledger-green);
+}
+
+.entry-form button:disabled {
+    background: var(--hairline);
+    color: var(--ink-soft);
+    cursor: not-allowed;
+}
+
+/* ---- Transactions page: form beside the log ---- */
+.ledger-layout {
+    display: grid;
+    grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
+    gap: 32px;
+    align-items: start;
+    padding: 32px;
+    max-width: 1360px;
+}
+
+.ledger-layout > .entry-form {
+    margin: 0;
+    max-width: none;
+    position: sticky; /* stays in view while scrolling a long log */
+    top: 24px;
+}
+
+.ledger-layout > #transaction-table {
+    margin: 0;
+    max-width: none;
+}
+
+/* Too narrow for two columns: stack form above the log */
+@media (max-width: 900px) {
+    .ledger-layout {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .ledger-layout > .entry-form {
+        position: static;
+    }
+}
+
 /* ---- Responsive ---- */
 @media (max-width: 640px) {
+    .ledger-layout {
+        padding: 16px;
+        gap: 20px;
+    }
+
+    .entry-form {
+        margin: 16px;
+        padding: 24px 20px;
+    }
+
     #site-header {
         flex-direction: column;
         align-items: flex-start;

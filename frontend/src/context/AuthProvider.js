@@ -1,29 +1,13 @@
-import {createContext, useEffect, useState} from "react";
-import useRefreshToken from "../hooks/useRefreshToken";
+import {createContext, useState} from "react";
 
 const AuthContext = createContext({});
 
+// Session restore on page load is handled by usePersistLogin.
 export const AuthProvider = ({children}) => {
     const [auth, setAuth] = useState({});
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        const init = async () => {
-            try {
-                // eslint-disable-next-line react-hooks/rules-of-hooks
-                const data = await useRefreshToken();
-                setAuth(data);
-            } catch {
-                setAuth({});
-            } finally {
-                setLoading(false);
-            }
-        };
-        init();
-    }, []);
 
     return (
-        <AuthContext.Provider value={{auth, setAuth, loading}}>
+        <AuthContext.Provider value={{auth, setAuth}}>
             {children}
         </AuthContext.Provider>
     )
